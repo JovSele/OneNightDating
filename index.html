@@ -43,25 +43,36 @@
       position: relative;
       height: 480px;
       overflow: hidden;
+z-index: 0;
     }
 
-    .profile-header img {
-      border-radius: 24px;
-      width: 65%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto; 
-      margin-top: 40px;
-    }
+.profile-header img {
+  border-radius: 24px;
+  width: 65%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  margin-top: 40px;
+
+  /* fade-out dolu – iba obrázok */
+  mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+  mask-mode: alpha;
+  -webkit-mask-mode: alpha;
+}
+
 
     .overlay-gradient {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 144px;
-      background: linear-gradient(rgba(0,0,0,0) 0%, rgb(16,16,16) 100%);
-    }
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgb(16, 16, 16) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
 
     .profile-title {
       position: absolute;
@@ -72,6 +83,7 @@
       font-size: 37px;
       font-weight: 700;
       text-shadow: 0 0.5px 1px rgba(0,0,0,0.25);
+      z-index: 1;
     }
 
     .profile-subtitle {
@@ -178,10 +190,60 @@
         box-shadow: 0 0 28px rgba(0, 204, 255, 0.9);
       }
     }
+
+    /* ÚPRAVA PRE MOBILY */
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      .wrapper {
+        padding: 0;
+      }
+
+      .content-box {
+        padding: 0;
+        border-radius: 0;
+        width: 100%;
+        margin: 0;
+      }
+
+      .profile-header {
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+      }
+
+      .profile-header img {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+        display: block;
+        object-fit: cover;
+      }
+
+      .profile-title {
+        font-size: 28px;
+        padding: 0 10px;
+      }
+
+      .profile-subtitle {
+        font-size: 14px;
+        padding: 0 10px;
+      }
+
+      .image-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 20px;
+      }
+    }
   </style>
-<script>
-  const customImages = [
-"https://i.ytimg.com/vi/UKBsHy1g8VI/oardefault.jpg",
+  <script>
+    const customImages = [
+     "https://i.ytimg.com/vi/UKBsHy1g8VI/oardefault.jpg",
 "https://i.pinimg.com/736x/6a/65/94/6a659409950b2b590b70f5b4206b0f52.jpg",
 "https://i.ytimg.com/vi/0zflmqrDuJU/hq720.jpg",
 "https://i.pinimg.com/736x/65/55/37/65553739f2489a2e54198ae790634573.jpg",
@@ -1041,32 +1103,32 @@
 "https://i.pinimg.com/736x/cd/83/1d/cd831d0fcd06c80aa3852c3cc0e7491a.jpg",
 "https://i.pinimg.com/736x/83/fa/3d/83fa3dec95c75062ee33b61aa7407ef7.jpg",
 "https://i.ytimg.com/vi/H-NkDNPdog8/oardefault.jpg"
-  ];
+    ];
 
-  function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
-  }
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const grid = document.querySelector(".image-grid");
-    grid.innerHTML = "";
-    const shuffled = shuffle([...customImages]).slice(0, 9);
-    for (let i = 0; i < shuffled.length; i++) {
-      const wrapper = document.createElement("a");
-      wrapper.href = "#";
-      wrapper.className = "image-wrapper";
-      const imageDiv = document.createElement("div");
-      imageDiv.className = "image";
-      imageDiv.style.backgroundImage = `url('${shuffled[i]}')`;
-      const dot = document.createElement("div");
-      const isOnline = Math.random() < 0.5;
-      dot.className = isOnline ? "green-dot" : "red-dot";
-      wrapper.appendChild(imageDiv);
-      wrapper.appendChild(dot);
-      grid.appendChild(wrapper);
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
     }
-  });
-</script>
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const grid = document.querySelector(".image-grid");
+      grid.innerHTML = "";
+      const shuffled = shuffle([...customImages]).slice(0, 9);
+      for (let i = 0; i < shuffled.length; i++) {
+        const wrapper = document.createElement("a");
+        wrapper.href = "#";
+        wrapper.className = "image-wrapper";
+        const imageDiv = document.createElement("div");
+        imageDiv.className = "image";
+        imageDiv.style.backgroundImage = `url('${shuffled[i]}')`;
+        const dot = document.createElement("div");
+        const isOnline = Math.random() < 0.5;
+        dot.className = isOnline ? "green-dot" : "red-dot";
+        wrapper.appendChild(imageDiv);
+        wrapper.appendChild(dot);
+        grid.appendChild(wrapper);
+      }
+    });
+  </script>
 </head>
 <body>
   <div class="background-blur"></div>
